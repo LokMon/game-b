@@ -1,0 +1,303 @@
+<!DOCTYPE html> 
+<head> 
+	<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon" href="https://grass-roots.oss-cn-shanghai.aliyuncs.com/favicon.ico">
+
+	<title>草根游戏生态-打飞机小游戏</title>
+    <!-- <script src="../phaser.min.js"></script> -->
+    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/phaser.min.js"></script>
+    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/vue.min.js"></script>
+    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/axios.min.js"></script>
+    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/clipboard.min.js"></script>
+    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/main.js"></script>
+    <style>
+      .pop-fixed {
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .pop-fixed .try-play {
+        margin-top: 10px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .pop-fixed .game-response {
+        color: #67c23a;
+        font-size: 20px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+      }
+      .pop-fixed .game-response b {
+        font-weight: bold;
+        font-size: 26px;
+      }
+      .pop-fixed span.sneer {
+        margin-top: 1vh;
+        display: block;
+        font-style: italic;
+        line-height: 1.2;
+      }
+      .pop-fixed span.sneer i {
+        font-size: 12px;
+      }
+      .pop-fixed .btn-submit {
+        display: inline-block;
+        width: 60vw;
+        height: 5vh;
+        line-height: 5vh;
+        background: #000;
+        color: #fff;
+        border-radius: 5px;
+        font-size: 3vw;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      .pop-fixed .first-step {
+        text-align: center;
+        width: 90vw;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 0 16px rgba(0,0,0,0.2);
+        padding: 5vh;
+        box-sizing: border-box;
+      }
+      .pop-fixed .first-step p.title {
+        font-size: 4vw;
+        margin-bottom: 1vh;
+      }
+      .pop-fixed .first-step p.text {
+        font-size: 3vw;
+        line-height: 1.5;
+        color: #f00;
+      }
+      .pop-fixed .first-step input {
+        margin-bottom: 3vh;
+        border: 1px solid #eee;
+        font-size: 5vw;
+        width: 80%;
+      }
+
+    </style>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        margin: 0 auto;
+      }
+      .logo {
+        position: absolute;
+        left: -1000px;
+        top: -1000px;
+      }
+      .share {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none;
+        z-index: 2;
+      }
+      .share img {
+        position: absolute;
+      }
+      .share .sharepng {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+      }
+      .game {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+</head>
+<body>
+  <!-- <div class="logo">
+    <img src="http://game.webxinxin.com/plane/assets/logo.png" alt="" />
+  </div> -->
+  <div id="share" class="share">
+    <!-- <img class="sharepng" src="http://game.webxinxin.com/plane/assets/share.png" alt="" />
+    <img class="closebtn" src="http://game.webxinxin.com/plane/assets/close.png" alt="" onclick="onCloseShare();" /> -->
+  </div>
+  <div id="game" class="game"></div>
+  <div id="appVue" class="pop-fixed" v-if="popWrap">
+    <div class="first-step" v-if="popChild == 1">
+      <p class="title">BSC钱包地址</p>
+      <input v-model="bscAddress" maxlength="100" :disabled="inputCount == 2" type="text">
+      <p class="title">电报ID（@XXX）</p>
+      <input v-model="telegramId" maxlength="30" :disabled="inputCount == 2" style="text-align:center" type="text">
+      <p class="text"><span>*注意：只有加入<a href="https://t.me/grassrootpeople" target="_blank">电报群（点我加群）</a>才会有奖励！</span></p> 
+      <div v-show="isLoading" class="btn-submit">提交中...</div>
+      <div v-show="!isLoading && inputCount !== 2" role="button" class="btn-submit" @click="submitForm">提交</div>
+      <div v-show="telegramId" :data-clipboard-text="invite_url" class="btn-submit copy-a" style="background-color:#fff;color:#333;border:1px solid #333" @click="copy('a')">点我复制邀请链接</div>
+      <p v-show="telegramId" class="try-play">邀请一人即可得到1次游戏机会!!</p>
+      <i v-show="scoreHistory" class="try-play">累计得分： {{ scoreHistory }}</i>
+    </div>
+    <div class="first-step" v-if="popChild == 2">
+      <p class="game-response">本次获得 <b>{{score}}</b>  GRP</p>
+      <!-- <span class="sneer" v-if="score == 0">哈哈哈笨蛋~  <i><br>（来自草根的无情嘲讽）</i></span> -->
+      <!-- <div v-show="isLoading" class="btn-submit">提交中...</div> -->
+      <!-- <div v-show="!isLoading" role="button" class="btn-submit" @click="submitForm">领取奖励</div> -->
+      <div v-show="telegramId" :data-clipboard-text="invite_url" class="btn-submit copy-b" style="background-color:#fff;color:#333;border:1px solid #333" @click="copy('b')">点我复制邀请链接</div>
+      <p v-show="telegramId" class="try-play">邀请一人即可得到1次游戏机会!!</p>
+    </div>
+  </div>
+  <script>
+    axios.interceptors.response.use(
+      response => {
+        return response.data
+      },
+      error => {
+        return Promise.reject(error)
+      }
+    )
+    var app = new Vue({
+      el: '#appVue',
+      data: {
+        score: 0,
+        inviteId: '',
+        popWrap: true,
+        inputCount: 0,
+        gameCount: 0,
+        isLoading: false,
+        popChild: 1,
+        bscAddress: '',
+        telegramId: '',
+        invite_url: '', // 邀请链接
+
+        scoreHistory: ''
+      },
+      mounted() {
+        this.initFun()
+      },
+      watch: {
+        telegramId (e) {
+          this.invite_url = `${window.location.origin}?invite=${e}`
+        },
+      },
+      methods: {
+        showGame() {
+          this.popWrap = true
+          this.popChild = 1
+        },
+        initFun() {
+          if (this.getQueryVariable('invite')) {
+            this.inviteId = this.getQueryVariable('invite')
+          }
+
+          if (localStorage.getItem('telegramId')) {
+            this.telegramId = localStorage.getItem('telegramId')
+            this.inputCount+=1
+          }
+          if (localStorage.getItem('bscAddress')) {
+            this.bscAddress = localStorage.getItem('bscAddress')
+            this.inputCount+=1
+          }
+          if (this.inputCount == 2) {
+            this.popWrap = false
+            this.submitForm()
+          }
+        },
+        gameFinish(e) {
+          if (e) {
+            this.score = e < 10000 ? e : 10000
+          }
+          this.popWrap = true
+          this.popChild = 2
+          const body = {}
+          body.telegram_id = this.telegramId
+          if (this.score > 10000) {
+            this.score = 10000
+          }
+          body.score = this.score
+          if (this.getQueryVariable('invite') !== undefined) {
+            body.invite_id = this.getQueryVariable('invite')
+          }
+          this.isLoading = true
+          axios.post('https://api.grloves.club/game_over', body).then(res => {
+            if (res.code == 4005) {
+              return alert('邀请ID填写有误')
+            }
+            if (res.code == 0) {
+              return alert(`游戏结束，获得的GRP在活动结束后统一发放！`)
+            }
+          }).catch(err => {
+            alert('服务器连接失败')
+            console.log(err);
+          }).finally(() => {
+            this.isLoading = false
+          })
+        },
+        getQueryVariable(variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split("&");
+          for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+          }
+          return undefined;
+        },
+        copy(index){
+          var clipboard = new ClipboardJS('.copy-'+index);
+          clipboard.on('success', () => {
+            alert('复制成功');
+            // 释放内存
+            clipboard.destroy()
+          })
+          clipboard.on('error', () => {
+            // 不支持复制
+            alert("该浏览器不支持自动复制");
+            // 释放内存
+            clipboard.destroy()
+          })
+        },
+        submitForm() {
+          if (!String(this.bscAddress).trim()) {
+            alert('请填写币安链钱包地址');
+            return;
+          }
+          if (!String(this.telegramId).trim()) {
+            alert('请填写电报ID');
+            return;
+          }
+          this.isLoading = true
+          const body = {}
+          body.telegram_id = this.telegramId.trim()
+          body.wallet_address = this.bscAddress.trim()
+          if (this.getQueryVariable('invite') !== undefined) {
+            body.invite_id = this.getQueryVariable('invite')
+          }
+
+          axios.post('https://api.grloves.club/game_submit', body).then(res => {
+            this.gameCount = res.data.game_count
+            this.scoreHistory = res.data.score
+            alert('游戏次数：'+res.data.game_count)
+            localStorage.setItem('telegramId', this.telegramId)
+            localStorage.setItem('bscAddress', this.bscAddress)
+            this.inputCount = 2
+            setTimeout(() => {
+              this.popWrap = false
+              this.popChild = 0
+            }, 0)
+          }).catch(err => {
+            console.log(err);
+            alert('提交失败');
+          }).finally(() => {
+            this.isLoading = false
+          })
+        },
+      },
+    })
+  </script>
+</body>

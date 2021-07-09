@@ -145,7 +145,7 @@
       <i v-show="scoreHistory" class="try-play">累计得分： {{ scoreHistory }}</i>
     </div>
     <div class="first-step" v-if="popChild == 2">
-      <p class="game-response">本次获得 <b>{{score}}</b>  GRP</p>
+      <p class="game-response">本次获得 <b>{{score / 100}}</b>GRP <br>（100分 = 1GRP）</p>
       <!-- <span class="sneer" v-if="score == 0">哈哈哈笨蛋~  <i><br>（来自草根的无情嘲讽）</i></span> -->
       <!-- <div v-show="isLoading" class="btn-submit">提交中...</div> -->
       <!-- <div v-show="!isLoading" role="button" class="btn-submit" @click="submitForm">领取奖励</div> -->
@@ -211,20 +211,22 @@
         },
         gameFinish(e) {
           if (e) {
-            this.score = e < 10000 ? e : 10000
+            this.score = e < 1000000 ? e : 1000000
           }
           this.popWrap = true
           this.popChild = 2
           const body = {}
           body.telegram_id = this.telegramId
-          if (this.score > 10000) {
-            this.score = 10000
+          if (this.score > 1000000) {
+            this.score = 1000000
           }
           body.score = this.score
+          body.score = body.score / 100
           if (this.getQueryVariable('invite') !== undefined) {
             body.invite_id = this.getQueryVariable('invite')
           }
           this.isLoading = true
+
           axios.post('https://api.grloves.club/game_over', body).then(res => {
             if (res.code == 4005) {
               return alert('邀请ID填写有误')

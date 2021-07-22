@@ -167,9 +167,9 @@
       data: {
         score: 0,
         inviteId: '',
-        popWrap: true,
+        popWrap: false,
         inputCount: 0,
-        gameCount: 0,
+        gameCount: 100,
         isLoading: false,
         popChild: 1,
         bscAddress: '',
@@ -192,6 +192,8 @@
           this.popChild = 1
         },
         initFun() {
+
+          return;
           if (this.getQueryVariable('invite')) {
             this.inviteId = this.getQueryVariable('invite')
           }

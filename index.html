@@ -2,15 +2,16 @@
 <head> 
 	<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <link rel="icon" href="https://grass-roots.oss-cn-shanghai.aliyuncs.com/favicon.ico">
+  <link rel="icon" href="https://cdn-token.oss-cn-shanghai.aliyuncs.com/img/favicon.ico">
 
-	<title>草根游戏生态-打飞机小游戏</title>
+	<title>coco游戏生态-打飞机小游戏</title>
     <!-- <script src="../phaser.min.js"></script> -->
-    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/phaser.min.js"></script>
-    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/vue.min.js"></script>
-    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/axios.min.js"></script>
-    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/clipboard.min.js"></script>
-    <script src="https://grass-roots.oss-cn-shanghai.aliyuncs.com/cdn/main.js"></script>
+    <script src="https://cdn-token.oss-cn-shanghai.aliyuncs.com/js/phaser.min.js"></script>
+    <script src="https://cdn-token.oss-cn-shanghai.aliyuncs.com/js/vue.min.js"></script>
+    <script src="https://cdn-token.oss-cn-shanghai.aliyuncs.com/js/axios.min.js"></script>
+    <script src="https://cdn-token.oss-cn-shanghai.aliyuncs.com/js/clipboard.min.js"></script>
+    <script src="https://cdn-token.oss-cn-shanghai.aliyuncs.com/js/main.js"></script>
+    <!-- <script src="./js/main.js"></script> -->
     <style>
       .pop-fixed {
         position: fixed;
@@ -137,7 +138,7 @@
       <input v-model="bscAddress" maxlength="100" :disabled="inputCount == 2" type="text">
       <p class="title">电报ID（@XXX）</p>
       <input v-model="telegramId" maxlength="30" :disabled="inputCount == 2" style="text-align:center" type="text">
-      <p class="text"><span>*注意：只有加入<a href="https://t.me/grassrootpeople" target="_blank">电报群（点我加群）</a>才会有奖励！</span></p> 
+      <p class="text"><span>*注意：只有加入<a href="https://t.me/COCOA_cn" target="_blank">电报群（点我加群）</a>才会有奖励！</span></p> 
       <div v-show="isLoading" class="btn-submit">提交中...</div>
       <div v-show="!isLoading && inputCount !== 2" role="button" class="btn-submit" @click="submitForm">提交</div>
       <div v-show="telegramId" :data-clipboard-text="invite_url" class="btn-submit copy-a" style="background-color:#fff;color:#333;border:1px solid #333" @click="copy('a')">点我复制邀请链接</div>
@@ -145,11 +146,12 @@
       <i v-show="scoreHistory" class="try-play">累计得分： {{ scoreHistory }}</i>
     </div>
     <div class="first-step" v-if="popChild == 2">
-      <p class="game-response">本次获得 <b>{{score / 100}}</b>GRP <br>（100分 = 1GRP）</p>
+      <p class="game-response">本次获得 <b>{{score / 100}}</b>coco币 <br>（100分 = 1coco币）</p>
       <!-- <span class="sneer" v-if="score == 0">哈哈哈笨蛋~  <i><br>（来自草根的无情嘲讽）</i></span> -->
       <!-- <div v-show="isLoading" class="btn-submit">提交中...</div> -->
       <!-- <div v-show="!isLoading" role="button" class="btn-submit" @click="submitForm">领取奖励</div> -->
       <div v-show="telegramId" :data-clipboard-text="invite_url" class="btn-submit copy-b" style="background-color:#fff;color:#333;border:1px solid #333" @click="copy('b')">点我复制邀请链接</div>
+      <div v-show="gameCount>0" role="button" class="btn-submit" @click="reStart">重新开始</div>
       <p v-show="telegramId" class="try-play">邀请一人即可得到1次游戏机会!!</p>
     </div>
   </div>
@@ -167,9 +169,9 @@
       data: {
         score: 0,
         inviteId: '',
-        popWrap: false,
+        popWrap: true,
         inputCount: 0,
-        gameCount: 100,
+        gameCount: 0,
         isLoading: false,
         popChild: 1,
         bscAddress: '',
@@ -192,8 +194,6 @@
           this.popChild = 1
         },
         initFun() {
-
-          return;
           if (this.getQueryVariable('invite')) {
             this.inviteId = this.getQueryVariable('invite')
           }
@@ -211,7 +211,13 @@
             this.submitForm()
           }
         },
+        reStart() {
+          this.score = 0
+          this.popWrap = false
+          window.game.state.start('start')
+        },
         gameFinish(e) {
+          this.gameCount -= 1
           if (e) {
             this.score = e < 1000000 ? e : 1000000
           }
@@ -229,12 +235,12 @@
           }
           this.isLoading = true
 
-          axios.post('https://api.grloves.club/game_over', body).then(res => {
+          axios.post('http://api-game.cocotoken.top/game_over', body).then(res => {
             if (res.code == 4005) {
               return alert('邀请ID填写有误')
             }
             if (res.code == 0) {
-              return alert(`游戏结束，获得的GRP在活动结束后统一发放！`)
+              return alert(`游戏结束，获得的coco币在活动结束后统一发放！`)
             }
           }).catch(err => {
             alert('服务器连接失败')
@@ -283,7 +289,7 @@
             body.invite_id = this.getQueryVariable('invite')
           }
 
-          axios.post('https://api.grloves.club/game_submit', body).then(res => {
+          axios.post('http://api-game.cocotoken.top/game_submit', body).then(res => {
             this.gameCount = res.data.game_count
             this.scoreHistory = res.data.score
             alert('游戏次数：'+res.data.game_count)

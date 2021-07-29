@@ -101,7 +101,7 @@ game.States.boot = function() {
       this.scale.forcePortrait = true;
       this.scale.refresh();
     }
-    game.load.image('loading', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/preloader.gif');
+    game.load.image('loading', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/preloader.gif');
   };
   this.create = function() {
     game.state.start('preload');
@@ -112,31 +112,31 @@ game.States.preload = function() {
   this.preload = function() {
     var preloadSprite = game.add.sprite(10, game.height/2, 'loading');
     game.load.setPreloadSprite(preloadSprite);
-    game.load.image('background', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/bg.jpg');
-    // game.load.image('copyright', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/copyright.png');
-    game.load.spritesheet('myplane', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/myplane.png', 40, 40, 4);
-    game.load.spritesheet('startbutton', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/startbutton.png', 100, 40, 2);
-    game.load.spritesheet('replaybutton', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/replaybutton.png', 80, 30, 2);
-    game.load.spritesheet('sharebutton', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/sharebutton.png', 80, 30, 2);
-    game.load.image('mybullet', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/mybullet.png');
-    game.load.image('bullet', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/bullet.png');
-    game.load.image('enemy1', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/enemy1.png');
-    game.load.image('enemy2', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/enemy2.png');
-    game.load.image('enemy3', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/enemy3.png');
-    game.load.spritesheet('explode1', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/explode1.png', 20, 20, 3);
-    game.load.spritesheet('explode2', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/explode2.png', 30, 30, 3);
-    game.load.spritesheet('explode3', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/explode3.png', 50, 50, 3);
-    game.load.spritesheet('myexplode', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/myexplode.png', 40, 40, 3);
-    game.load.image('award', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/award.png');
-    game.load.audio('normalback', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/normalback.mp3');
-    game.load.audio('playback', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/playback.mp3');
-    game.load.audio('fashe', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/fashe.mp3');
-    game.load.audio('crash1', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/crash1.mp3');
-    game.load.audio('crash2', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/crash2.mp3');
-    game.load.audio('crash3', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/crash3.mp3');
-    game.load.audio('ao', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/ao.mp3');
-    game.load.audio('pi', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/pi.mp3');
-    game.load.audio('deng', 'https://grass-roots.oss-cn-shanghai.aliyuncs.com/assets/deng.mp3');
+    game.load.image('background', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/bg.jpg');
+    // game.load.image('copyright', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/copyright.png');
+    game.load.spritesheet('myplane', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/myplane.png', 40, 40, 4);
+    game.load.spritesheet('startbutton', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/startbutton.png', 100, 40, 2);
+    game.load.spritesheet('replaybutton', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/replaybutton.png', 80, 30, 2);
+    game.load.spritesheet('sharebutton', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/sharebutton.png', 80, 30, 2);
+    game.load.image('mybullet', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/mybullet.png');
+    game.load.image('bullet', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/bullet.png');
+    game.load.image('enemy1', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/enemy1.png');
+    game.load.image('enemy2', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/enemy2.png');
+    game.load.image('enemy3', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/enemy3.png');
+    game.load.spritesheet('explode1', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/explode1.png', 20, 20, 3);
+    game.load.spritesheet('explode2', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/explode2.png', 30, 30, 3);
+    game.load.spritesheet('explode3', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/explode3.png', 50, 50, 3);
+    game.load.spritesheet('myexplode', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/myexplode.png', 40, 40, 3);
+    game.load.image('award', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/award.png');
+    game.load.audio('normalback', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/normalback.mp3');
+    game.load.audio('playback', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/playback.mp3');
+    game.load.audio('fashe', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/fashe.mp3');
+    game.load.audio('crash1', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/crash1.mp3');
+    game.load.audio('crash2', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/crash2.mp3');
+    game.load.audio('crash3', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/crash3.mp3');
+    game.load.audio('ao', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/ao.mp3');
+    game.load.audio('pi', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/pi.mp3');
+    game.load.audio('deng', 'https://cdn-token.oss-cn-shanghai.aliyuncs.com/assets/deng.mp3');
   };
   this.create = function() {
     game.state.start('main');
@@ -255,7 +255,7 @@ game.States.start = function() {
         selfPool: 10,
         bulletsPool: 50,
         explodePool: 10,
-        life: 3,
+        life: 5,
         velocity: 50,
         bulletX: 13,
         bulletY: 30,
@@ -274,13 +274,13 @@ game.States.start = function() {
         selfPool: 5,
         bulletsPool: 25,
         explodePool: 5,
-        life: 6,
+        life: 8,
         velocity: 40,
         bulletX: 22,
         bulletY: 50,
         bulletVelocity: 300,
         selfTimeInterval: 5,
-        bulletTimeInterval: 2000, // 子弹间隔
+        bulletTimeInterval: 1500,
         score: 20000,
         firesound: this.firesound,
         crashsound: this.crash3
@@ -456,5 +456,4 @@ game.state.add('start', game.States.start);
 game.state.add('over', game.States.over);
 
 game.state.start('boot');
-
 

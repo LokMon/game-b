@@ -146,7 +146,7 @@
       <i v-show="scoreHistory" class="try-play">累计得分： {{ scoreHistory }}</i>
     </div>
     <div class="first-step" v-if="popChild == 2">
-      <p class="game-response">本次获得 <b>{{score / 100}}</b>coco币 <br>（100分 = 1coco币）</p>
+      <p class="game-response">本次获得 <b>{{score / 100}}</b>coco币 <br>（100分 = 1coco币<span v-show="score>=30000000">,单局上限30000币</span>）</p>
       <!-- <span class="sneer" v-if="score == 0">哈哈哈笨蛋~  <i><br>（来自草根的无情嘲讽）</i></span> -->
       <!-- <div v-show="isLoading" class="btn-submit">提交中...</div> -->
       <!-- <div v-show="!isLoading" role="button" class="btn-submit" @click="submitForm">领取奖励</div> -->
@@ -217,17 +217,18 @@
         gameFinish(e) {
           this.gameCount -= 1
           const maxScore = 3000000
-          if (e) {
-            this.score = e < maxScore ? e : maxScore
-          }
+          this.score = e
+          // if (e) {
+          //   this.score = e < maxScore ? e : maxScore
+          // }
           this.popWrap = true
           this.popChild = 2
           const body = {}
           body.telegram_id = this.telegramId
-          if (this.score > maxScore) {
-            this.score = maxScore
-          }
           body.score = this.score
+          if (body.score > maxScore) {
+            body.score = maxScore
+          }
           body.score = body.score / 100
           if (this.getQueryVariable('invite') !== undefined) {
             body.invite_id = this.getQueryVariable('invite')

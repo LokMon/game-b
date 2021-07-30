@@ -212,21 +212,20 @@
           }
         },
         reStart() {
-          this.score = 0
-          this.popWrap = false
-          window.game.state.start('start')
+          location.reload();
         },
         gameFinish(e) {
           this.gameCount -= 1
+          const maxScore = 3000000
           if (e) {
-            this.score = e < 1000000 ? e : 1000000
+            this.score = e < maxScore ? e : maxScore
           }
           this.popWrap = true
           this.popChild = 2
           const body = {}
           body.telegram_id = this.telegramId
-          if (this.score > 1000000) {
-            this.score = 1000000
+          if (this.score > maxScore) {
+            this.score = maxScore
           }
           body.score = this.score
           body.score = body.score / 100

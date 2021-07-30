@@ -243,7 +243,7 @@ game.States.start = function() {
         bulletVelocity: 200,
         selfTimeInterval: 2,
         bulletTimeInterval: 1000,
-        score: 6000,
+        score: 18000,
         firesound: this.firesound,
         crashsound: this.crash1
       },
@@ -262,7 +262,7 @@ game.States.start = function() {
         bulletVelocity: 250,
         selfTimeInterval: 3,
         bulletTimeInterval: 1200,
-        score: 10000,
+        score: 30000,
         firesound: this.firesound,
         crashsound: this.crash2
       },
@@ -281,7 +281,7 @@ game.States.start = function() {
         bulletVelocity: 300,
         selfTimeInterval: 5,
         bulletTimeInterval: 1500,
-        score: 20000,
+        score: 60000,
         firesound: this.firesound,
         crashsound: this.crash3
       }
